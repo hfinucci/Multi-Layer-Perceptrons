@@ -1,46 +1,75 @@
-from cmath import exp
-from random import randint
 import numpy as np
+from abc import ABC, abstractmethod
 
-# [[1,1], [-1,-1], [1,-1], [-1,1]]
-class Perceptron():
-    def __init__(self, training, output, learn_rate, umbral):
-        self.training = training
-        self.output = output
-        self.learn_rate = learn_rate
-        self.umbral = umbral
+ERROR_MIN = 0.001
 
-    # Aplica la funcion de activacion y devuelve el O
-    def calculate_activation(self):
-        total = 0
-        for i in range(1, self.ws.length):
-            total += self.ws[i] * self.training[i]
-        total -= self.umbral
-        return 1 if total < 0 else -1
+class Perceptron(ABC):
 
-    def calculate_error(self, expected, activation, w, u):
-        total = 0
-        for i in range(0, stimulus.length):
-            total += abs(expected - activation)
+    def __init__(self, training, expected_output, learn_rate):
+        self.training = np.array(list(map(lambda t: np.append(t, [1]), training)), dtype=float)
+        self.expected_output = expected_output
+        self.learning_rate = learn_rate
+        self.error_min = None
+        self.w_min = None
 
+    @abstractmethod
+    def error(self, w):
+        pass
 
-    def delta(self, expected, calc_value, stimulus):
-        return self.learn_rate * (expected - calc_value) * stimulus
+    @abstractmethod
+    def activation(self, excitation):
+        pass
 
-    def train(self):
-        i = 0
-        self.w = np.zeros(self.training[0].length)
+    def activation_derivative(self, excitation):
+        return 1
+
+    def train(self, max_generations):
+        current_gen = 0
         error = 0
-        error_min = 1
-        while error_min > 0 and i < 1000:
-            u = randint(0, self.training.length)
-            activation = self.calculate_activation()
-            w_array = self.delta(self.output[u], activation, np.array(self.training[u]))
-            w += w_array
-            error = self.calculate_error(self.output[u], activation, w, u)
-            if error < error_min:
-                error_min = error
-                w_min = w
-            i += 1
-        return w_min, error
+        self.error_min = np.inf
 
+        w = np.random.rand(len(self.training[0]))
+        positions = np.arange(0, len(self.training))
+
+        while self.error_min > ERROR_MIN and current_gen < max_generations:
+            np.random.shuffle(positions)
+            for i in positions:
+                excitation = np.inner(self.training[i], w)
+                activation = self.activation(excitation)
+                w += self.learning_rate * (self.expected_output[i] - activation) * self.training[i] * self.activation_derivative(excitation)
+
+                error = self.error(w)
+
+                if error < self.error_min:
+                    self.error_min = error
+                    self.w_min = w
+
+            current_gen += 1
+
+    def test(self, test_set):
+        real_input = np.array(list(map(lambda t: np.append(t, [1]), test_set)), dtype=float)
+        results = []
+        for i in range(len(test_set)):
+            excitation = np.inner(real_input[i], self.w_min)
+            results.append(self.activation(excitation))
+        return results
+
+    def plot(self):
+        print(self.training)
+
+    # # Aplica la funcion de activacion y devuelve el O
+    #
+    # def calculate_activation(self):
+    #     total = 0
+    #     for i in range(1, self.ws.length):
+    #         total += self.ws[i] * self.training[i]
+    #     total -= self.umbral
+    #     return 1 if total < 0 else -1
+    #
+    # def calculate_error(self, expected, activation, w, u):
+    #     total = 0
+    #     for i in range(0, stimulus.length):
+    #         total += abs(expected - activation)
+    #
+    # def delta(self, expected, calc_value, stimulus):
+    #     return self.learn_rate * (expected - calc_value) * stimulus
