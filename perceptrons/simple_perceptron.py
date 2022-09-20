@@ -1,6 +1,5 @@
-from Perceptron import Perceptron
+from perceptrons.Perceptron import Perceptron
 import numpy as np
-
 
 class SimplePerceptron(Perceptron):
 

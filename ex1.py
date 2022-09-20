@@ -1,6 +1,6 @@
 import numpy as np
 import json
-from simple_perceptron import SimplePerceptron
+from perceptrons.simple_perceptron import SimplePerceptron
 from constants import *
 
 with open("ex1_config.json") as file:
