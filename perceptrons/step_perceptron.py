@@ -1,7 +1,7 @@
-from perceptrons.Perceptron import Perceptron
+from perceptrons.perceptron import Perceptron
 import numpy as np
 
-class SimplePerceptron(Perceptron):
+class StepPerceptron(Perceptron):
 
     def __init__(self, training, expected_output, learning_rate):
         super().__init__(training, expected_output, learning_rate)
