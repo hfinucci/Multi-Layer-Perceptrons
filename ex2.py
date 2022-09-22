@@ -9,7 +9,7 @@ y = []
 z = []
 
 
-with open('TP2-ej2-conjunto.csv', 'r') as csvfile:
+with open('Ejer2/TP2-ej2-conjunto.csv', 'r') as csvfile:
     plots = csv.reader(csvfile, delimiter=',')
 
     for row in plots:

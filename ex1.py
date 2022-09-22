@@ -3,7 +3,7 @@ import json
 from perceptrons.step_perceptron import StepPerceptron
 from Ejer1.constants import *
 
-with open("ex1_config.json") as file:
+with open("Ejer1/ex1_config.json") as file:
     jsonObject = json.load(file)
     file.close()
 
