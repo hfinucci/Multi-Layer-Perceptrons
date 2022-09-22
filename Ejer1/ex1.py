@@ -1,7 +1,7 @@
 import numpy as np
 import json
 from perceptrons.step_perceptron import StepPerceptron
-from constants import *
+from Ejer1.constants import *
 
 with open("ex1_config.json") as file:
     jsonObject = json.load(file)

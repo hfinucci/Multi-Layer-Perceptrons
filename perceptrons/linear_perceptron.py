@@ -1,4 +1,4 @@
-from perceptrons.perceptron import Perceptron
+from perceptrons.Perceptron import Perceptron
 import numpy as np
 
 class LinearPerceptron(Perceptron):
