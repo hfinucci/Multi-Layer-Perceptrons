@@ -1,4 +1,4 @@
-from perceptrons.Perceptron import Perceptron
+from perceptrons.perceptron import Perceptron
 import numpy as np
 
 
