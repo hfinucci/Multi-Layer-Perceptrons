@@ -31,6 +31,8 @@ class Perceptron(ABC):
         w = np.random.rand(len(self.training[0]))
         positions = np.arange(0, len(self.training))
 
+        errors = []
+
         while self.error_min > ERROR_MIN and current_gen < max_generations:
             np.random.shuffle(positions)
             for i in positions:
@@ -43,8 +45,10 @@ class Perceptron(ABC):
                 if error < self.error_min:
                     self.error_min = error
                     self.w_min = w
+                    errors.append(float(error))
 
             current_gen += 1
+        return errors, self.w_min
 
     def test(self, test_set):
         real_input = np.array(list(map(lambda t: np.append(t, [1]), test_set)), dtype=float)
