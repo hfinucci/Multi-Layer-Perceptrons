@@ -29,3 +29,18 @@ def plot_graph(points, output, weight):
 
     ax.plot(x, y, color="black")
     plt.show()
+
+def plot_errors(errors):
+    fig, ax = plt.subplots()
+
+    ax.set_xlabel('Generation')
+    ax.set_ylabel('Error')
+    ax.set_title('Step Perceptron Error')
+
+    generations = np.array(range(len(errors)))
+
+    ax.set_xlim(0, len(generations))
+    ax.set_ylim(0, np.amax(errors))
+
+    ax.plot(generations, errors, color='b')
+    plt.show()
