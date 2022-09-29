@@ -21,5 +21,6 @@ class NonLinearPerceptron(Perceptron):
     def scale(self, value):
         return (((value + 1) / 2) * (self.max_value - self.min_value)) + self.min_value
 
-    # TODO: Implementar la derivada de la funcion de activacion
-    # def activation_derivative(self, excitation):
+    # TODO: Chequear
+    def activation_derivative(self, excitation):
+        return 1 - np.tanh(excitation) ** 2

@@ -43,4 +43,9 @@ with open('Ejer2/TP2-ej2-conjunto.csv', 'r') as csvfile:
     # show plot
     plt.show()
 
+with open('Ejer2/ex2_config.json') as file:
+    jsonObject = json.load(file)
+    file.close()
 
+learning_rate = float(jsonObject["learning_rate"])
+generation = int(jsonObject["generation"])
