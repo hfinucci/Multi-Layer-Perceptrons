@@ -14,4 +14,4 @@ class LinearPerceptron(Perceptron):
         for i in range(len(self.training)):
             output = np.inner(self.training[i], w)
             error += (self.expected_output[i] - output) ** 2
-        return error / 2
+        return 0.5 * error

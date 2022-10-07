@@ -4,8 +4,12 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import csv
 import json
+import numpy as np
+
+from perceptrons.perceptron_types import LINEAR, NON_LINEAR
 from perceptrons.linear_perceptron import LinearPerceptron
 from perceptrons.non_linear_perceptron import NonLinearPerceptron
+from utils import plot_errors, normalize
 
 x = []
 y = []
@@ -16,6 +20,7 @@ with open('Ejer2/TP2-ej2-conjunto.csv', 'r') as csvfile:
     plots = csv.reader(csvfile, delimiter=',')
     data = []
     expected_output = []
+    print(plots)
 
     for row in plots:
         x.append(float(row[0]))
@@ -57,13 +62,21 @@ perceptron = str(jsonObject["perceptron"])
 learning_rate = float(jsonObject["learning_rate"])
 generation = int(jsonObject["generation"])
 
-if (perceptron == "linear"):
+if (perceptron == LINEAR):
     perceptron = LinearPerceptron(data, expected_output, learning_rate)
     errors, min_w = perceptron.train(generation)
     print("Errors: " + str(errors))
+    print("Error min: " + str(min(errors)))
     print("Min w: " + str(min_w))
-else:
+    plot_errors(errors)
+elif (perceptron == NON_LINEAR):
+    data = normalize(np.array(data, dtype=float))
     perceptron = NonLinearPerceptron(data, expected_output, learning_rate)
     errors, min_w = perceptron.train(generation)
-    print("Errors: " + errors)
-    print("Min w: " + min_w)
+    print("Errors: " + str(errors))
+    print("Error min: " + str(min(errors)))
+    print("Min w: " + str(min_w))
+    plot_errors(errors)
+else: 
+    print("Perceptron not found")
+    exit(1)

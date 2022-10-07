@@ -2,7 +2,7 @@ import numpy as np
 import json
 from perceptrons.step_perceptron import StepPerceptron
 from Ejer1.constants import *
-from ex1_plot import plot_graph, plot_errors
+from utils import plot_graph, plot_errors
 
 with open("Ejer1/ex1_config.json") as file:
     jsonObject = json.load(file)

@@ -1,5 +1,5 @@
 {
-    "perceptron": "linear",
-    "learning_rate": 0.001,
+    "perceptron": "non_linear",
+    "learning_rate": 0.0001,
     "generation": 10000
 }
