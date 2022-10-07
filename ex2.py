@@ -20,14 +20,16 @@ with open('Ejer2/TP2-ej2-conjunto.csv', 'r') as csvfile:
     plots = csv.reader(csvfile, delimiter=',')
     data = []
     expected_output = []
-    print(plots)
 
     for row in plots:
+        print(row)
         x.append(float(row[0]))
         y.append(float(row[2]))
         z.append(float(row[3]))
         data.append([float(row[0]), float(row[1]), float(row[2])])
         expected_output.append(float(row[3]))
+
+    csvfile.close()
 
     #pnt promedio
     x1 = sum(x)/len(x)
@@ -70,7 +72,7 @@ if (perceptron == LINEAR):
     print("Min w: " + str(min_w))
     plot_errors(errors)
 elif (perceptron == NON_LINEAR):
-    data = normalize(np.array(data, dtype=float))
+    expected_output = normalize(expected_output)
     perceptron = NonLinearPerceptron(data, expected_output, learning_rate)
     errors, min_w = perceptron.train(generation)
     print("Errors: " + str(errors))

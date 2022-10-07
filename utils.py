@@ -49,6 +49,7 @@ def normalize(data):
     min_expected = min(data)
     max_expected = max(data)
 
-    data = np.array(list(map(lambda x: 2 * ((x - min_expected) / (max_expected - min_expected)) - 1, data)))
+    data = np.array(data)
+    data = 2 * ((data - min_expected) / (max_expected - min_expected)) - 1
 
     return data
