@@ -24,4 +24,7 @@
 from multi_layer import *
 
 
-multi_layer = MultiPerceptron([2,4,3], 1, 0)
+multi_layer = MultiPerceptron([3,2,1], 1, 0)
+
+multi_layer.train([], [], 100)
+
