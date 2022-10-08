@@ -1,16 +1,21 @@
 import numpy as np
 from abc import ABC, abstractmethod
+import random
+from perceptrons.perceptron_types import NON_LINEAR
 
 ERROR_MIN = 0.001
 
 class Perceptron(ABC):
 
-    def __init__(self, training, expected_output, learn_rate):
+    # Every entry in the training set has an additional cell with value 1 -> UMBRAL
+    # The weight vector also includes the UMBRAL
+    def __init__(self, training, expected_output, learn_rate, perceptron_type):
         self.training = np.array(list(map(lambda t: np.append(t, [1]), training)), dtype=float)
         self.expected_output = expected_output
         self.learning_rate = learn_rate
         self.error_min = None
         self.w_min = None
+        self.perceptron_type = perceptron_type
 
     @abstractmethod
     def error(self, w):
@@ -32,6 +37,11 @@ class Perceptron(ABC):
         positions = np.arange(0, len(self.training))
 
         errors = []
+        accuracies = []
+
+        rand_index = random.randint(10, 20)
+        training_test_set = np.array(list(map(lambda t: t[0:(len(t) - 1)], self.training[0:rand_index])), dtype=float)
+        expected_output_test_set = self.expected_output[0:rand_index]
 
         while self.error_min > ERROR_MIN and current_gen < max_generations:
             np.random.shuffle(positions)
@@ -47,8 +57,10 @@ class Perceptron(ABC):
                     self.w_min = w
                     errors.append(float(error))
 
+            if(self.perceptron_type == NON_LINEAR):
+                accuracies.append(self.get_accuracy(training_test_set, expected_output_test_set))
             current_gen += 1
-        return errors, self.w_min
+        return accuracies, errors, self.w_min
 
     def test(self, test_set):
         real_input = np.array(list(map(lambda t: np.append(t, [1]), test_set)), dtype=float)
@@ -58,22 +70,15 @@ class Perceptron(ABC):
             results.append(self.activation(excitation))
         return results
 
+    def get_accuracy(self, test_set, expected_output):
+        results = self.test(test_set)
+        correct = 0
+        print("Results: ", results)
+        print("Expected: ", expected_output)
+        for i in range(len(results)):
+            if (abs(results[i] - expected_output[i]) < 0.02):
+                correct += 1
+        return correct / len(results)
+
     def plot(self):
         print(self.training)
-
-    # # Aplica la funcion de activacion y devuelve el O
-    #
-    # def calculate_activation(self):
-    #     total = 0
-    #     for i in range(1, self.ws.length):
-    #         total += self.ws[i] * self.training[i]
-    #     total -= self.umbral
-    #     return 1 if total < 0 else -1
-    #
-    # def calculate_error(self, expected, activation, w, u):
-    #     total = 0
-    #     for i in range(0, stimulus.length):
-    #         total += abs(expected - activation)
-    #
-    # def delta(self, expected, calc_value, stimulus):
-    #     return self.learn_rate * (expected - calc_value) * stimulus

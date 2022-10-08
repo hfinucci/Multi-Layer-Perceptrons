@@ -5,11 +5,12 @@ import matplotlib.pyplot as plt
 import csv
 import json
 import numpy as np
+import random
 
 from perceptrons.perceptron_types import LINEAR, NON_LINEAR
 from perceptrons.linear_perceptron import LinearPerceptron
 from perceptrons.non_linear_perceptron import NonLinearPerceptron
-from utils import plot_errors, normalize
+from utils import *
 
 x = []
 y = []
@@ -62,23 +63,34 @@ with open('Ejer2/ex2_config.json') as file:
 
 perceptron = str(jsonObject["perceptron"])
 learning_rate = float(jsonObject["learning_rate"])
+beta = float(jsonObject["beta"])
 generation = int(jsonObject["generation"])
+do_test = bool(jsonObject["test"])
 
 if (perceptron == LINEAR):
     perceptron = LinearPerceptron(data, expected_output, learning_rate)
-    errors, min_w = perceptron.train(generation)
-    print("Errors: " + str(errors))
-    print("Error min: " + str(min(errors)))
-    print("Min w: " + str(min_w))
-    plot_errors(errors)
+
 elif (perceptron == NON_LINEAR):
-    expected_output = normalize(expected_output)
-    perceptron = NonLinearPerceptron(data, expected_output, learning_rate)
-    errors, min_w = perceptron.train(generation)
-    print("Errors: " + str(errors))
-    print("Error min: " + str(min(errors)))
-    print("Min w: " + str(min_w))
-    plot_errors(errors)
+    expected_output = escalate(expected_output)
+    perceptron = NonLinearPerceptron(data, expected_output, learning_rate, beta)
+    
 else: 
     print("Perceptron not found")
     exit(1)
+
+accuracies, errors, min_w = perceptron.train(generation)
+
+plot_accuracies(accuracies)
+
+if (do_test):
+    random_index = random.randint(10, 20)
+    expected_input_test_set = data[random_index:27]
+    print(expected_input_test_set)
+    results = perceptron.test(expected_input_test_set)
+    print(results)
+    plot_error_in_accuracy(results, expected_output[random_index:27])
+    print("Mean error: ", np.mean(abs(results - expected_output[random_index:27])))
+
+print("Error min: " + str(min(errors)))
+print("Min w: " + str(min_w))
+plot_errors(errors)

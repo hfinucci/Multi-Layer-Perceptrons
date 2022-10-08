@@ -1,10 +1,12 @@
 from perceptrons.perceptron import Perceptron
+from perceptrons.perceptron_types import LINEAR
 import numpy as np
 
+# The expected output belongs to the real set
 class LinearPerceptron(Perceptron):
 
     def __init__(self, training, expected_output, learning_rate):
-        super().__init__(training, expected_output, learning_rate)
+        super().__init__(training, expected_output, learning_rate, LINEAR)
 
     def activation(self, excitation):
         return excitation

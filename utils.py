@@ -45,7 +45,37 @@ def plot_errors(errors):
     ax.plot(generations, errors, color='b')
     plt.show()
 
-def normalize(data):
+def plot_error_in_accuracy(test_results, expected_results):
+    fig, ax = plt.subplots()
+
+    errors = abs(test_results - expected_results)
+    ax.set_ylabel('Error')
+    ax.set_title('Error in Accuracy between Test Results and Expected Results')
+
+    results_count = len(test_results)
+
+    ax.set_xlim(0, results_count)
+    ax.set_ylim(0, np.amax(errors))
+    
+    ax.scatter(range(results_count), errors, color='b')
+    plt.show()
+
+def plot_accuracies(accuracies):
+    fig, ax = plt.subplots()
+
+    ax.set_xlabel('Generation')
+    ax.set_ylabel('Accuracy')
+    ax.set_title('Evolution of Results\' Accuracy by Generation')
+
+    generations = np.array(range(len(accuracies)))
+
+    ax.set_xlim(0, len(generations))
+    ax.set_ylim(0, np.amax(accuracies))
+
+    ax.plot(generations, accuracies, color='b')
+    plt.show()
+
+def escalate(data):
     min_expected = min(data)
     max_expected = max(data)
 

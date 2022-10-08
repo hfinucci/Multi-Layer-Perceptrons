@@ -21,10 +21,11 @@ else:
 
 
 perceptron = StepPerceptron(training_set, expected_output, learning_rate)
-errors, min_w = perceptron.train(generation)
+accuracies, errors, min_w = perceptron.train(generation)
 
 plot_graph(training_set, expected_output, min_w)
 plot_errors(errors)
 
 results = perceptron.test(np.array([[-1, 1], [1, -1], [-1, -1], [1, 1]]))
 print(results)
+print("Min weight: ", min_w)
