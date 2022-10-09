@@ -1,32 +1,33 @@
 from Ejer3.neuron import Neuron
+import numpy as np
 
 class Layer:
 
     def __init__(self, num_neurons, prev_num_neurons, activation, learn_rate):
-        self.neurons = [Neuron(prev_num_neurons, activation, learn_rate) for i in range(num_neurons)]
-        self.size = num_neurons
+        self.neurons = np.array(list(Neuron(prev_num_neurons, activation, learn_rate) for i in range(num_neurons)))
+        # self.neurons = [Neuron(prev_num_neurons, activation, learn_rate) for i in range(num_neurons)]
 
-    def get_size(self):
-        return self.size
+    # def get_size(self):
+    #     return self.size
 
     def get_all_outputs(self):
-        to_return = []
+        outputs = []
         for current_neuron in self.neurons:
-            to_return.append(current_neuron.output)
-        return to_return
+            outputs.append(current_neuron.output)
+        return outputs
 
-    def get_expected_inner(self, num_neuron):
-        aux = 0
+    def get_neuron_delta(self, num_neuron):
+        delta = 0
         for current_neuron in self.neurons:
-            aux += (current_neuron.weights[num_neuron] * current_neuron.delta)
-        return aux
+            delta += (current_neuron.weights[num_neuron] * current_neuron.delta)
+        return delta
 
-    def propagation(self, input):
-        for i in range(0, self.size):
-            self.neurons[i].calculate_output(input)
+    def propagation(self, inputs):
+        for neuron in self.neurons:
+            neuron.calculate_output(inputs)
 
-    def plot(self, num):
-        print(str(num) + ": ")
-        for i in range(0, self.size):
-            self.neurons[i].plot()
-        print("\n")
+    def __str__(self):
+        print("Layer " + " : ")
+        for neuron in self.neurons:
+            neuron.plot()
+        print("------------------------")

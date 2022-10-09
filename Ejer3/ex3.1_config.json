@@ -1,0 +1,5 @@
+{
+    "operation": "XOR",
+    "learning_rate": 1,
+    "generation": 100000
+}

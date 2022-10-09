@@ -1,24 +1,36 @@
 import numpy as np
+from abc import ABC, abstractmethod
 
-class Activation:
-    # TODO
+
+class Activation(ABC):
     @staticmethod
-    def sigmoid(x):
+    @abstractmethod
+    def apply(self, x):
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def apply_dx(self, x):
+        pass
+
+
+class Sigmoid(Activation):
+
+    def apply(self, x):
         if -700 < x < 700:
             return np.exp(x) / (1 + np.exp(x))
         return 0 if x < 0 else 1
 
-    @staticmethod
-    def sigmoid_dx(x):
+    def apply_dx(self, x):
         # se hace 0 despues de este valor
         if -355 < x < 355:
             return np.exp(x) / np.power(np.exp(x) + 1, 2)
         return 0
 
-    @staticmethod
-    def tanh(excitation):
+
+class Tanh(Activation):
+    def apply(self, excitation):
         return np.tanh(excitation)
 
-    @staticmethod
-    def tanh_dx(excitation):
+    def apply_dx(self, excitation):
         return 1 - np.tanh(excitation) ** 2

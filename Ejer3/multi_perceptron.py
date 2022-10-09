@@ -5,40 +5,53 @@ import numpy as np
 class MultiPerceptron:
     ERROR_MIN = 0.01
 
-    def __init__(self, net_congif, learn_rate, Activation):
-        self.layers = []
-        for i in range(1, len(net_congif)):
-            self.layers.append(Layer(net_congif[i], net_congif[i - 1], Activation, learn_rate))
+    def __init__(self, net_config, learn_rate, activation):
 
-        self.num_layers = len(net_congif) - 1
+        self.layers = np.array(
+            list(Layer(net_config[i], net_config[i - 1], activation, learn_rate) for i in range(1, len(net_config))))
 
-    def get_prev_outputs(self, current_layer, inputs):
+        # self.layers = []
+        # for i in range(1, len(net_config)):
+        #     self.layers.append(Layer(net_config[i], net_config[i - 1], activation, learn_rate))
+        #
+        # self.num_layers = len(net_config) - 1
+
+    def get_inputs(self, current_layer, inputs):
         index = current_layer - 1
         if index < 0:
             return inputs
         else:
-            return self.layers[current_layer - 1].get_all_outputs()
+            return self.layers[index].get_all_outputs()
 
     def get_expected(self, current_layer, current_neuron, expected_value):
-        if current_layer + 1 < self.num_layers and expected_value is None:
-            return self.layers[current_layer + 1].get_expected_inner(current_neuron)
+        if current_layer + 1 < len(self.layers):
+            return self.layers[current_layer + 1].get_neuron_delta(current_neuron)
         else:
-            return expected_value - self.layers[current_layer].neurons[current_neuron].output
+            return expected_value[current_neuron] - self.layers[current_layer].neurons[current_neuron].output
 
-    def plot(self):
-        for i in range(0, self.num_layers):
-            self.layers[i].plot(i)
+    def __str__(self):
+        index = 0
+        for layer in self.layers:
+            layer.plot(index)
+            index += 1
 
-    def forward_propagation(self, input):
-        for i in range(0, self.num_layers):
-            self.layers[i].propagation(self.get_prev_outputs(i, input))
+    def forward_propagation(self, inputs):
+        layer_index = 0
+        for layer in self.layers:
+            layer.propagation(self.get_inputs(layer_index, inputs))
+            layer_index += 1
 
-    def back_propagation(self, expected_value):
-        for layer in range(self.num_layers - 1, 0):
-            inputs = self.get_prev_outputs(layer, expected_value)
-            for neuron in range(0, self.layers[layer].get_size()):
-                expected = self.get_expected(layer, neuron, expected_value)
-                self.layers[layer].neurons[neuron].update_w(inputs, expected)
+        # for i in range(0, self.num_layers):
+        #     self.layers[i].propagation(self.get_prev_outputs(i, input))
+
+    def back_propagation(self, data, expected_value):
+        for layer_index in range(len(self.layers) - 1, -1, -1):
+            inputs = self.get_inputs(layer_index, data)
+            neuron_index = 0
+            for neuron in self.layers[layer_index].neurons:
+                expected = self.get_expected(layer_index, neuron_index, expected_value)
+                neuron.update_w(inputs, expected)
+                neuron_index += 1
 
     def calculate_error(self, expected_output):
         m = len(self.layers)
@@ -60,13 +73,13 @@ class MultiPerceptron:
             np.random.shuffle(positions)
             for i in positions:
                 self.forward_propagation(training[i])
-                self.back_propagation(expected_output[i])
-                
-                error = self.calculate_error(expected_output[i])
+                self.back_propagation(training[i], expected_output[i])
 
+                error = self.calculate_error(expected_output[i])
+                print(error)
                 if error < self.error_min:
                     self.error_min = error
-                    print(self.error_min)
+                    #print(self.error_min)
                     errors.append(float(error))
                     if self.error_min < self.ERROR_MIN:
                         print("termine!")
@@ -75,7 +88,7 @@ class MultiPerceptron:
             current_gen += 1
 
         return errors
-            
+
     def save(self, filepath):
         file = open(filepath, "w+")
         for layer in self.layers:
@@ -89,6 +102,9 @@ class MultiPerceptron:
 
         file.close()
 
-
     def test(self, test_set):
-        pass
+        to_return = []
+        for data in test_set:
+            self.forward_propagation(data)
+            to_return.append(self.layers[-1].get_all_outputs())
+        return to_return

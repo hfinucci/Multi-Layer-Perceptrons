@@ -1,0 +1,2 @@
+XOR = "xor"
+AND = "and"

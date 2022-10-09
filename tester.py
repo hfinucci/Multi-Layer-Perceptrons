@@ -29,9 +29,9 @@ training_set = np.array([[-1, 1], [1, -1], [-1, -1], [1, 1]])
 
 expected_output = np.array([[1], [1], [-1], [-1]])
 
-a = Activation()
-multi_layer = MultiPerceptron([2,2,1], 1, a)
+a = Sigmoid()
+multi_layer = MultiPerceptron([2, 2, 1], 1, a)
 
+multi_layer.plot()
 
-
-errors = multi_layer.train(training_set, expected_output, 1000)
+#errors = multi_layer.train(training_set, expected_output, 1000)
