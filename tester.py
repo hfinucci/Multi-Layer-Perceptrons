@@ -21,7 +21,7 @@
 # print(excitation)
 
 
-from multi_layer import *
+from Ejer3.multi_perceptron import *
 
 
 multi_layer = MultiPerceptron([3,2,1], 1, 0)
