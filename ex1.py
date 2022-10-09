@@ -24,6 +24,7 @@ perceptron = StepPerceptron(training_set, expected_output, learning_rate)
 accuracies, errors, min_w = perceptron.train(generation)
 
 plot_graph(training_set, expected_output, min_w)
+print("Error min: " + str(min(errors)))
 plot_errors(errors)
 
 results = perceptron.test(np.array([[-1, 1], [1, -1], [-1, -1], [1, 1]]))
