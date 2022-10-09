@@ -22,9 +22,16 @@
 
 
 from Ejer3.multi_perceptron import *
+from Ejer3.activation import *
 
 
-multi_layer = MultiPerceptron([3,2,1], 1, 0)
+training_set = np.array([[-1, 1], [1, -1], [-1, -1], [1, 1]])
 
-multi_layer.train([], [], 100)
+expected_output = np.array([[1], [1], [-1], [-1]])
 
+a = Activation()
+multi_layer = MultiPerceptron([2,2,1], 1, a)
+
+
+
+errors, w_min = multi_layer.train(training_set, expected_output, 100)

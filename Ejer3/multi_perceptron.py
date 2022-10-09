@@ -3,7 +3,7 @@ import numpy as np
 
 
 class MultiPerceptron:
-    ERROR_MIN = 0.001
+    ERROR_MIN = 0.01
 
     def __init__(self, net_congif, learn_rate, Activation):
         self.layers = []
@@ -40,22 +40,53 @@ class MultiPerceptron:
                 expected = self.get_expected(layer, neuron, expected_value)
                 self.layers[layer].neurons[neuron].update_w(inputs, expected)
 
+    def calculate_error(self, expected_output):
+        m = len(self.layers)
+        neurons = self.layers[m - 1].neurons
+        aux_sum = 0
+        for i in range(len(neurons)):
+            aux_sum += (expected_output[i] - neurons[i].output) ** 2
+        return aux_sum
+
     def train(self, training, expected_output, max_gen):
         current_gen = 0
         error = 0
         self.error_min = np.inf
 
-        # no seria len(training) ?
-        positions = np.arange(0, len(self.training))
+        errors = []
+        positions = np.arange(0, len(training))
 
         while self.error_min > self.ERROR_MIN and current_gen < max_gen:
             np.random.shuffle(positions)
             for i in positions:
                 self.forward_propagation(training[i])
                 self.back_propagation(expected_output[i])
+                
+                error = self.calculate_error(expected_output[i])
 
-            #TODO: Calcular error
-            error_min = self.calculate_error()
+                if error < self.error_min:
+                    self.error_min = error
+                    print(self.error_min)
+                    errors.append(float(error))
+                    if self.error_min < self.ERROR_MIN:
+                        print("termine!")
+                        return errors, self.w_min
+
+        return errors, self.w_min
+            
+    def save(self, filepath):
+        file = open(filepath, "w+")
+        for layer in self.layers:
+            for neuron in layer.neurons:
+                wcount = 1
+                for weight in neuron.weights:
+                    file.write("w%d: %d" % wcount % weight)
+                    wcount += 1
+                file.write("\n")
+        print("termine!")
+
+        file.close()
+
 
     def test(self, test_set):
         pass

@@ -3,7 +3,7 @@ from Ejer3.neuron import Neuron
 class Layer:
 
     def __init__(self, num_neurons, prev_num_neurons, activation, learn_rate):
-        self.neurons = [Neuron(prev_num_neurons + 1, activation, learn_rate) for i in range(num_neurons)]
+        self.neurons = [Neuron(prev_num_neurons, activation, learn_rate) for i in range(num_neurons)]
         self.size = num_neurons
 
     def get_size(self):
