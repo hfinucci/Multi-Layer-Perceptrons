@@ -34,4 +34,4 @@ multi_layer = MultiPerceptron([2,2,1], 1, a)
 
 
 
-errors, w_min = multi_layer.train(training_set, expected_output, 100)
+errors = multi_layer.train(training_set, expected_output, 1000)

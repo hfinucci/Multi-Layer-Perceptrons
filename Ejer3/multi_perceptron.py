@@ -70,9 +70,11 @@ class MultiPerceptron:
                     errors.append(float(error))
                     if self.error_min < self.ERROR_MIN:
                         print("termine!")
-                        return errors, self.w_min
+                        return errors
 
-        return errors, self.w_min
+            current_gen += 1
+
+        return errors
             
     def save(self, filepath):
         file = open(filepath, "w+")
