@@ -80,9 +80,10 @@ else:
 
 accuracies, errors, min_w = perceptron.train(generation)
 
-plot_accuracies(accuracies)
+if (perceptron == NON_LINEAR):
+    plot_accuracies(accuracies)
 
-if (do_test):
+if (do_test and perceptron == NON_LINEAR):
     random_index = random.randint(10, 20)
     expected_input_test_set = data[random_index:27]
     print(expected_input_test_set)
