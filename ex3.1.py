@@ -1,3 +1,4 @@
+from ast import And
 from Ejer3.multi_perceptron import MultiPerceptron
 import json
 from Ejer3.constants import *
@@ -21,7 +22,8 @@ else:
 activation = Sigmoid()
 multi_layer = MultiPerceptron([2, 2, 1], learning_rate, activation)
 error = multi_layer.train(training_set, expected_output, generation)
-print(multi_layer.test(training_set))
+print('------------')
+print(multi_layer.test([[1,1]]))
 # plot_graph(training_set, expected_output, min_w)
 # plot_errors(errors)
 

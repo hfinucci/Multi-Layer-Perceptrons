@@ -27,7 +27,7 @@ class MultiPerceptron:
         if current_layer + 1 < len(self.layers):
             return self.layers[current_layer + 1].get_neuron_delta(current_neuron)
         else:
-            return expected_value[current_neuron] - self.layers[current_layer].neurons[current_neuron].output
+            return expected_value[0] - self.layers[current_layer].neurons[current_neuron].output
 
     def __str__(self):
         index = 0
@@ -82,7 +82,8 @@ class MultiPerceptron:
                     #print(self.error_min)
                     errors.append(float(error))
                     if self.error_min < self.ERROR_MIN:
-                        print("termine!")
+                        print("termine en %d generaciones" % current_gen)
+                        print("error de %d" % self.error_min)
                         return errors
 
             current_gen += 1

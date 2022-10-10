@@ -1,5 +1,5 @@
 {
     "operation": "XOR",
-    "learning_rate": 1,
+    "learning_rate": 0.01,
     "generation": 100000
 }
