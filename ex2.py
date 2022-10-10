@@ -78,12 +78,14 @@ else:
     print("Perceptron not found")
     exit(1)
 
-accuracies, errors, min_w = perceptron.train(generation)
+accuracies, errors, min_w, weights = perceptron.train(generation)
 
 if (perceptron == NON_LINEAR):
+    
     plot_accuracies(accuracies)
 
 if (do_test and perceptron == NON_LINEAR):
+    np.random.shuffle(positions)
     random_index = random.randint(10, 20)
     expected_input_test_set = data[random_index:27]
     print(expected_input_test_set)

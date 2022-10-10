@@ -1,4 +1,4 @@
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt, animation
 import numpy as np
 
 # Documentation of pyplot
@@ -7,10 +7,11 @@ import numpy as np
 # TODO: Transform function to use all weights obtained from training
 def plot_graph(points, output, weight):
     fig, ax = plt.subplots()
+    fig.suptitle('Step Perceptron Graph')
 
     ax.set_xlabel('x')
     ax.set_ylabel('y')
-    ax.set_title('Step Perceptron Graph')
+    # ax.set_title('Epoch = ' + str(epoch))
 
     for i in range(len(points)):
         if output[i] == 1:
@@ -29,6 +30,34 @@ def plot_graph(points, output, weight):
 
     ax.plot(x, y, color="black")
     plt.show()
+
+def plot_step(inputs, outputs, weights, min_w):
+    print("weights len: " + str(len(weights)))
+    fig, ax = plt.subplots()
+
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
+    for i in range(len(inputs)):
+        if outputs[i] == 1:
+            ax.scatter(inputs[i][0], inputs[i][1], color='b')
+        else:
+            ax.scatter(inputs[i][0], inputs[i][1], color='r')
+    
+    x = np.linspace(-1.5, 1.5, 100)
+    y = -((min_w[0] * x + min_w[2]) / min_w[1])
+
+    line = ax.plot(x, y, color="black")
+
+    ax.set_title("Step Perceptron Graph")
+    def animate(i):
+        y1 = -((weights[i][0] * x + weights[i][2]) / weights[i][1])
+        ax.plot(x, y1, color="black")
+
+    anim = animation.FuncAnimation(fig, animate, interval=100, frames=len(weights))
+
+    pillow_writer = animation.PillowWriter(fps=20)
+    anim.save("step_graph.gif", writer=pillow_writer)
+    plt.close()
 
 def plot_errors(errors):
     fig, ax = plt.subplots()

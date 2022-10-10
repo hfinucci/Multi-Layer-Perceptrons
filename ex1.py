@@ -2,7 +2,7 @@ import numpy as np
 import json
 from perceptrons.step_perceptron import StepPerceptron
 from Ejer1.constants import *
-from utils import plot_graph, plot_errors
+from utils import plot_graph, plot_errors, plot_step
 
 with open("Ejer1/ex1_config.json") as file:
     jsonObject = json.load(file)
@@ -21,9 +21,11 @@ else:
 
 
 perceptron = StepPerceptron(training_set, expected_output, learning_rate)
-accuracies, errors, min_w = perceptron.train(generation)
+accuracies, errors, min_w, weights = perceptron.train(generation)
 
+# plot_step(training_set, expected_output, weights, min_w)
 plot_graph(training_set, expected_output, min_w)
+print(weights)
 print("Error min: " + str(min(errors)))
 plot_errors(errors)
 

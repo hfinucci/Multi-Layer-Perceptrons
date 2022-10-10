@@ -36,6 +36,7 @@ class Perceptron(ABC):
         w = np.random.rand(len(self.training[0]))
         positions = np.arange(0, len(self.training))
 
+        weights = []
         errors = []
         accuracies = []
 
@@ -48,6 +49,7 @@ class Perceptron(ABC):
             for i in positions:
                 excitation = np.inner(self.training[i], w)
                 activation = self.activation(excitation)
+                
                 w += self.learning_rate * (self.expected_output[i] - activation) * self.training[i] * self.activation_derivative(excitation)
 
                 error = self.error(w)
@@ -55,12 +57,16 @@ class Perceptron(ABC):
                 if error < self.error_min:
                     self.error_min = error
                     self.w_min = w
-                    errors.append(float(error))
+                    weights.append(w)
+                
 
             if(self.perceptron_type == NON_LINEAR):
                 accuracies.append(self.get_accuracy(training_test_set, expected_output_test_set))
+            
+            
+            errors.append(error)
             current_gen += 1
-        return accuracies, errors, self.w_min
+        return accuracies, errors, self.w_min, weights
 
     def test(self, test_set):
         real_input = np.array(list(map(lambda t: np.append(t, [1]), test_set)), dtype=float)
