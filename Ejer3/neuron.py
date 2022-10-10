@@ -22,7 +22,7 @@ class Neuron:
         inputs = np.append(inputs, 1)
         self.delta = self.output * (1 - self.output) * expected
         for i in range(0, len(self.weights)):
-            self.weights[i] += self.weights[i] * self.learn_rate * self.delta * inputs[i]
+            self.weights[i] += self.learn_rate * self.delta * inputs[i]
 
     def __str__(self):
         print("{ Pesos: " + str(self.weights) + " Delta: " + str(self.delta) + " Output: " + str(self.output) + " }\n")
