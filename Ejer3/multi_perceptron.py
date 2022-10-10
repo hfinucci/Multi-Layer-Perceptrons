@@ -3,7 +3,7 @@ import numpy as np
 
 
 class MultiPerceptron:
-    ERROR_MIN = 0.001
+    ERROR_MIN = 0.0001
 
     def __init__(self, net_config, learn_rate, activation):
 
@@ -27,7 +27,8 @@ class MultiPerceptron:
         if current_layer + 1 < len(self.layers):
             return self.layers[current_layer + 1].get_neuron_delta(current_neuron)
         else:
-            return expected_value[0] - self.layers[current_layer].neurons[current_neuron].output
+            neuron = self.layers[current_layer].neurons[current_neuron]
+            return expected_value[0] - neuron.output
 
     def __str__(self):
         index = 0

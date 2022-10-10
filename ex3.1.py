@@ -17,9 +17,9 @@ training_set = np.array([[-1, 1], [1, -1], [-1, -1], [1, 1]])
 if operation == AND:
     expected_output = np.array([[-1], [-1], [-1], [1]])
 else:
-    expected_output = np.array([[1], [1], [0], [0]])
+    expected_output = np.array([[1], [1], [-1], [-1]])
 
-activation = Sigmoid()
+activation = Tanh()
 multi_layer = MultiPerceptron([2, 2, 1], learning_rate, activation)
 error = multi_layer.train(training_set, expected_output, generation)
 print('--------------------\n')
