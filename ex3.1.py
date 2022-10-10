@@ -17,12 +17,16 @@ training_set = np.array([[-1, 1], [1, -1], [-1, -1], [1, 1]])
 if operation == AND:
     expected_output = np.array([[-1], [-1], [-1], [1]])
 else:
-    expected_output = np.array([[1], [1], [-1], [-1]])
+    expected_output = np.array([[1], [1], [0], [0]])
 
 activation = Sigmoid()
 multi_layer = MultiPerceptron([2, 2, 1], learning_rate, activation)
 error = multi_layer.train(training_set, expected_output, generation)
+print('--------------------\n')
+#print(multi_layer)
+print('--------------------\n')
 print(multi_layer.test(training_set))
+
 #plot_graph(training_set, expected_output, min_w)
 #plot_errors(errors)
 

@@ -7,7 +7,7 @@ class Neuron:
         self.weights = np.random.uniform(-1, 1, weight_num + 1)
         self.output = 0
         self.delta = 0
-        # self.output_dx = 0
+        self.output_dx = 0
         self.activation = activation
         self.learn_rate = learn_rate
 
@@ -16,11 +16,12 @@ class Neuron:
         e = np.inner(inputs, self.weights)
         self.output = self.activation.apply(e)
         aux = 0
-        # self.output_dx = self.activation.apply_dx(e)
+        self.output_dx = self.activation.apply_dx(e)
 
-    def update_w(self, inputs: np.ndarray, expected: np.ndarray):
+    def update_w(self, inputs: np.ndarray, error: np.ndarray):
         inputs = np.append(inputs, 1)
-        self.delta = self.output * (1 - self.output) * expected
+        # self.delta = self.output * (1 - self.output) * expected
+        self.delta = self.output_dx * error
         for i in range(0, len(self.weights)):
             self.weights[i] += self.learn_rate * self.delta * inputs[i]
 

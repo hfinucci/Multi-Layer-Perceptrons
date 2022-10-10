@@ -3,7 +3,7 @@ import numpy as np
 
 
 class MultiPerceptron:
-    ERROR_MIN = 0.01
+    ERROR_MIN = 0.001
 
     def __init__(self, net_config, learn_rate, activation):
 
@@ -49,8 +49,8 @@ class MultiPerceptron:
             inputs = self.get_inputs(layer_index, data)
             neuron_index = 0
             for neuron in self.layers[layer_index].neurons:
-                expected = self.get_expected(layer_index, neuron_index, expected_value)
-                neuron.update_w(inputs, expected)
+                neuron_error = self.get_expected(layer_index, neuron_index, expected_value)
+                neuron.update_w(inputs, neuron_error)
                 neuron_index += 1
 
     def calculate_error(self, expected_output):
@@ -76,7 +76,6 @@ class MultiPerceptron:
                 self.back_propagation(training[i], expected_output[i])
 
                 error = self.calculate_error(expected_output[i])
-                print(error)
                 if error < self.error_min:
                     self.error_min = error
                     #print(self.error_min)
