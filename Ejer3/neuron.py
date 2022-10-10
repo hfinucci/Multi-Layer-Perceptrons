@@ -25,5 +25,5 @@ class Neuron:
         for i in range(0, len(self.weights)):
             self.weights[i] += self.learn_rate * self.delta * inputs[i]
 
-    def __str__(self):
+    def plot(self):
         print("{ Pesos: " + str(self.weights) + " Delta: " + str(self.delta) + " Output: " + str(self.output) + " }\n")

@@ -26,7 +26,7 @@ class Layer:
         for neuron in self.neurons:
             neuron.calculate_output(inputs)
 
-    def __str__(self):
+    def plot(self):
         print("Layer " + " : ")
         for neuron in self.neurons:
             neuron.plot()

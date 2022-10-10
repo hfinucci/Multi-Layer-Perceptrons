@@ -3,7 +3,7 @@ import numpy as np
 
 
 class MultiPerceptron:
-    ERROR_MIN = 0.0001
+    ERROR_MIN = 0.01
 
     def __init__(self, net_config, learn_rate, activation):
 
@@ -28,13 +28,11 @@ class MultiPerceptron:
             return self.layers[current_layer + 1].get_neuron_delta(current_neuron)
         else:
             neuron = self.layers[current_layer].neurons[current_neuron]
-            return expected_value[0] - neuron.output
+            return expected_value[current_neuron] - neuron.output
 
-    def __str__(self):
-        index = 0
+    def plot(self):
         for layer in self.layers:
-            layer.plot(index)
-            index += 1
+            layer.plot()
 
     def forward_propagation(self, inputs):
         layer_index = 0

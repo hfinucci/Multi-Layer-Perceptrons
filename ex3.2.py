@@ -1,23 +1,43 @@
 from Ejer3.multi_perceptron import MultiPerceptron
 import numpy as np
+from Ejer3.activation import *
 
 training_arr = []
-expected_output = []
 
 with open('Ejer3/TP2-ej3-digitos.txt', 'r') as txtfile:
+    line_count = 0
+    aux_array = []
     for line in txtfile:
-        inner_arr = [
-            int(line[0]),
-            int(line[2]),
-            int(line[4]),
-            int(line[6]),
-            int(line[8])
-        ]
-        training_arr.append(inner_arr)
-        aux = []
-        aux.append(int(line[8]))
-        expected_output.append(aux)
+        aux_array.append(int(line[0]))
+        aux_array.append(int(line[2]))
+        aux_array.append(int(line[4]))
+        aux_array.append(int(line[6]))
+        aux_array.append(int(line[8]))
+        line_count += 1
+        if line_count % 7 == 0:
+            training_arr.append(aux_array)
+            aux_array = []
+txtfile.close()
 
-multi_layer = MultiPerceptron([3, 2, 1], 1, 0)
+activation = Sigmoid()
 
-multi_layer.train(training_arr, expected_output, 100)
+outputs = [[0], [1], [0], [1], [0], [1], [0], [1], [0], [1]]
+
+multi_layer = MultiPerceptron([35, 10, 5, 1], 1, activation)
+#multi_layer.plot()
+
+multi_layer.train(training_arr, outputs, 100)
+
+
+print("========================")
+print(multi_layer.test([training_arr[1],
+                        training_arr[6],
+                        training_arr[2],
+                        training_arr[7],
+                        training_arr[3],
+                        training_arr[0],
+                        training_arr[8],
+                        training_arr[4],
+                        training_arr[9],
+                        training_arr[5],
+                        ]))
