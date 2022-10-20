@@ -15,7 +15,6 @@ class Activation(ABC):
 
 
 class Sigmoid(Activation):
-
     def apply(self, x):
         if -700 < x < 700:
             return np.exp(x) / (1 + np.exp(x))

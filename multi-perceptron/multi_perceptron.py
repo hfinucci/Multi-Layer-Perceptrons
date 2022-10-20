@@ -1,54 +1,41 @@
-from Ejer3.layer import Layer
+from layer import Layer
 import numpy as np
 
 
 class MultiPerceptron:
-    ERROR_MIN = 0.01
 
     def __init__(self, net_config, learn_rate, activation):
-
+        max_num_layers = len(net_config) - 1
         self.layers = np.array(
-            list(Layer(net_config[i], net_config[i - 1], activation, learn_rate) for i in range(1, len(net_config))))
+            list(Layer(net_config[i], net_config[i - 1], activation, learn_rate, max_num_layers, i) for i in
+                 range(1, len(net_config))))
 
-        # self.layers = []
-        # for i in range(1, len(net_config)):
-        #     self.layers.append(Layer(net_config[i], net_config[i - 1], activation, learn_rate))
-        #
-        # self.num_layers = len(net_config) - 1
-
-    def get_inputs(self, current_layer, inputs):
-        index = current_layer - 1
+    def get_layer_inputs(self, layer_index, perceptron_inputs):
+        index = layer_index - 1
         if index < 0:
-            return inputs
+            return perceptron_inputs
         else:
             return self.layers[index].get_all_outputs()
 
-    def get_expected(self, current_layer, current_neuron, expected_value):
-        if current_layer + 1 < len(self.layers):
-            return self.layers[current_layer + 1].get_neuron_delta(current_neuron)
+    def get_neuron_error(self, layer_index, neuron_index, perceptron_expected_values):
+        if layer_index + 1 < len(self.layers):
+            return self.layers[layer_index + 1].get_neuron_delta(neuron_index)
         else:
-            neuron = self.layers[current_layer].neurons[current_neuron]
-            return expected_value[current_neuron] - neuron.output
+            neuron = self.layers[layer_index].neurons[neuron_index]
+            return perceptron_expected_values[neuron_index] - neuron.output
 
-    def plot(self):
-        for layer in self.layers:
-            layer.plot()
-
-    def forward_propagation(self, inputs):
+    def forward_propagation(self, input):
         layer_index = 0
         for layer in self.layers:
-            layer.propagation(self.get_inputs(layer_index, inputs))
+            layer.propagation(self.get_layer_inputs(layer_index, input))
             layer_index += 1
 
-        # for i in range(0, self.num_layers):
-        #     self.layers[i].propagation(self.get_prev_outputs(i, input))
-
-    def back_propagation(self, data, expected_value):
+    def back_propagation(self, data, expected_value, ):
         for layer_index in range(len(self.layers) - 1, -1, -1):
             inputs = self.get_inputs(layer_index, data)
             neuron_index = 0
             for neuron in self.layers[layer_index].neurons:
-                neuron_error = self.get_expected(layer_index, neuron_index, expected_value)
+                neuron_error = self.get_neuron_error(layer_index, neuron_index, expected_value)
                 neuron.update_w(inputs, neuron_error)
                 neuron_index += 1
 
@@ -60,7 +47,7 @@ class MultiPerceptron:
             aux_sum += (expected_output[i] - neurons[i].output) ** 2
         return aux_sum
 
-    def train(self, training, expected_output, max_gen):
+    def train(self, training, expected_output, max_gen, ERROR_MIN):
         current_gen = 0
         error = 0
         self.error_min = np.inf
@@ -68,7 +55,7 @@ class MultiPerceptron:
         errors = []
         positions = np.arange(0, len(training))
 
-        while self.error_min > self.ERROR_MIN and current_gen < max_gen:
+        while self.error_min > ERROR_MIN and current_gen < max_gen:
             np.random.shuffle(positions)
             for i in positions:
                 self.forward_propagation(training[i])
@@ -77,7 +64,7 @@ class MultiPerceptron:
                 error = self.calculate_error(expected_output[i])
                 if error < self.error_min:
                     self.error_min = error
-                    #print(self.error_min)
+                    # print(self.error_min)
                     errors.append(float(error))
                     if self.error_min < self.ERROR_MIN:
                         print("termine en %d generaciones" % current_gen)

@@ -5,8 +5,8 @@ from perceptrons.perceptron_types import NON_LINEAR
 
 ERROR_MIN = 0.001
 
-class Perceptron(ABC):
 
+class Perceptron(ABC):
     # Every entry in the training set has an additional cell with value 1 -> UMBRAL
     # The weight vector also includes the UMBRAL
     def __init__(self, training, expected_output, learn_rate, perceptron_type):
@@ -49,8 +49,9 @@ class Perceptron(ABC):
             for i in positions:
                 excitation = np.inner(self.training[i], w)
                 activation = self.activation(excitation)
-                
-                w += self.learning_rate * (self.expected_output[i] - activation) * self.training[i] * self.activation_derivative(excitation)
+
+                w += self.learning_rate * (self.expected_output[i] - activation) * self.training[
+                    i] * self.activation_derivative(excitation)
 
                 error = self.error(w)
 
@@ -58,12 +59,10 @@ class Perceptron(ABC):
                     self.error_min = error
                     self.w_min = w
                     weights.append(w)
-                
 
-            if(self.perceptron_type == NON_LINEAR):
+            if (self.perceptron_type == NON_LINEAR):
                 accuracies.append(self.get_accuracy(training_test_set, expected_output_test_set))
-            
-            
+
             errors.append(error)
             current_gen += 1
         return accuracies, errors, self.w_min, weights
