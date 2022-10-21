@@ -10,12 +10,13 @@ class MultiPerceptron:
             list(Layer(net_config[i], net_config[i - 1], activation, learn_rate, max_num_layers, i) for i in
                  range(1, len(net_config))))
 
-    def get_layer_inputs(self, layer_index, perceptron_inputs):
-        index = layer_index - 1
-        if index < 0:
-            return perceptron_inputs
-        else:
-            return self.layers[index].get_all_outputs()
+
+    # def get_layer_inputs(self, layer_index, perceptron_inputs):
+    #     index = layer_index - 1
+    #     if index < 0:
+    #         return perceptron_inputs
+    #     else:
+    #         return self.layers[index].get_all_outputs()
 
     def get_neuron_error(self, layer_index, neuron_index, perceptron_expected_values):
         if layer_index + 1 < len(self.layers):

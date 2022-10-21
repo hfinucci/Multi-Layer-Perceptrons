@@ -1,5 +1,5 @@
 import numpy as np
-from activacion import *
+from activation import *
 
 
 class Neuron:
