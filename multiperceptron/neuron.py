@@ -6,8 +6,8 @@ class Neuron:
     def __init__(self, weight_num, activation: Activation, learn_rate):
         self.weights = np.random.uniform(-1, 1, weight_num + 1)
         self.output = 0
-        self.error = 0
         self.output_dx = 0
+        self.error = 0
         self.activation = activation
         self.learn_rate = learn_rate
 

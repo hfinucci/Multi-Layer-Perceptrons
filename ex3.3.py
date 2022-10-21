@@ -68,9 +68,9 @@
 # # multi_layer.save('Ejer3/weights.txt')
 
 
-from Ejer3.multi_perceptron import MultiPerceptron
+from multiperceptron.multi_perceptron import MultiPerceptron
 import numpy as np
-from Ejer3.activation import *
+from multiperceptron.activation import *
 
 training_arr = []
 
