@@ -1,4 +1,4 @@
-from neuron import Neuron
+from multiperceptron.neuron import Neuron
 import numpy as np
 
 
@@ -20,6 +20,7 @@ class Layer:
 
     # devuelve un array con los deltas para las neuronas de la layer anterior
     def get_deltas(self):
+        # aca esta el error, la dimencion de delta esta mal
         delta = [0 for x in range(self.weight_num)]
         for current_neuron in self.neurons:
             for w_index in range(self.weight_num):

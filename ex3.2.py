@@ -1,6 +1,6 @@
-from Ejer3.multi_perceptron import MultiPerceptron
+from multiperceptron.multi_perceptron import MultiPerceptron
+from multiperceptron.activation import *
 import numpy as np
-from Ejer3.activation import *
 
 training_arr = []
 

@@ -1,4 +1,4 @@
-from layer import Layer
+from multiperceptron.layer import Layer
 import numpy as np
 
 
@@ -63,10 +63,10 @@ class MultiPerceptron:
                 self.forward_propagation(training[i])
 
                 if n_samples == n:
-                    update_flag = true
+                    update_flag = True
                     n_samples = 0
                 else:
-                    update_flag = false
+                    update_flag = False
                     n_samples = n_samples + 1
                 self.back_propagation(training[i], expected_output[i], update_flag)
 

@@ -69,8 +69,8 @@
 
 
 from multiperceptron.multi_perceptron import MultiPerceptron
-import numpy as np
 from multiperceptron.activation import *
+import numpy as np
 
 training_arr = []
 
@@ -99,7 +99,7 @@ outputs = [[1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0
 multi_layer = MultiPerceptron([35, 20, 15, 10], 0.01, activation)
 # multi_layer.plot()
 
-multi_layer.train(training_arr, outputs, 1000000)
+multi_layer.train(training_arr, outputs, 1000000, 0.001, 10 )
 
 print("========================")
 

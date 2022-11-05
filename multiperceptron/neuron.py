@@ -1,5 +1,5 @@
 import numpy as np
-from activation import *
+from multiperceptron.activation import *
 
 
 class Neuron:

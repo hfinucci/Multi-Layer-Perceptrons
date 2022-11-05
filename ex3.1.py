@@ -1,8 +1,9 @@
+from multiperceptron.multi_perceptron import MultiPerceptron
+from multiperceptron.activation import *
+import numpy as np
 from ast import And
-from Ejer3.multi_perceptron import MultiPerceptron
 import json
 from Ejer3.constants import *
-from Ejer3.activation import *
 
 with open("Ejer3/ex3.1_config.json") as file:
     jsonObject = json.load(file)
@@ -21,14 +22,14 @@ else:
 
 activation = Tanh()
 multi_layer = MultiPerceptron([2, 2, 1], learning_rate, activation)
-error = multi_layer.train(training_set, expected_output, generation)
+error = multi_layer.train(training_set, expected_output, generation, 0.001, 1)
 print('--------------------\n')
-#print(multi_layer)
+# print(multi_layer)
 print('--------------------\n')
 print(multi_layer.test(training_set))
 
-#plot_graph(training_set, expected_output, min_w)
-#plot_errors(errors)
+# plot_graph(training_set, expected_output, min_w)
+# plot_errors(errors)
 
 # results = perceptron.test(np.array([[-1, 1], [1, -1], [-1, -1], [1, 1]]))
 # print(results)
